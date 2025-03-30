@@ -1,0 +1,109 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "draconicshenanigans:item/wyvern_armor",
+		"particle": "draconicshenanigans:item/wyvern_armor"
+	},
+	"elements": [
+		{
+			"name": "Right Leg Layer",
+			"from": [7.85, -0.25, 5.75],
+			"to": [12.35, 2.25, 10.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [10, 12, 8]},
+			"faces": {
+				"north": {"uv": [1, 15.5, 2, 16], "texture": "#0"},
+				"east": {"uv": [0, 15.5, 1, 16], "texture": "#0"},
+				"south": {"uv": [3, 15.5, 4, 16], "texture": "#0"},
+				"west": {"uv": [2, 15.5, 3, 16], "texture": "#0"},
+				"up": {"uv": [2, 15.5, 1, 14.5], "texture": "#0"},
+				"down": {"uv": [3, 14.5, 2, 15.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8.85, 0.85, 5.55],
+			"to": [11.35, 2.35, 6.05],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9.1, 1.1, 4.8]},
+			"faces": {
+				"north": {"uv": [0.25, 0.5, 0.75, 0.75], "texture": "#0"},
+				"east": {"uv": [0.25, 0.5, 0.25, 0.75], "texture": "#0"},
+				"south": {"uv": [0.75, 0.5, 1.25, 0.75], "texture": "#0"},
+				"west": {"uv": [0.75, 0.5, 0.75, 0.75], "texture": "#0"},
+				"up": {"uv": [0.75, 0.5, 0.25, 0.5], "texture": "#0"},
+				"down": {"uv": [1.25, 0.5, 0.75, 0.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Left Leg Layer",
+			"from": [3.85, -0.25, 5.75],
+			"to": [8.35, 2.25, 10.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [6, 12, 8]},
+			"faces": {
+				"north": {"uv": [1, 15.5, 2, 16], "texture": "#0"},
+				"east": {"uv": [0, 15.5, 1, 16], "texture": "#0"},
+				"south": {"uv": [3, 15.5, 4, 16], "texture": "#0"},
+				"west": {"uv": [2, 15.5, 3, 16], "texture": "#0"},
+				"up": {"uv": [2, 15.5, 1, 14.5], "texture": "#0"},
+				"down": {"uv": [3, 14.5, 2, 15.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4.85, 0.85, 5.55],
+			"to": [7.35, 2.35, 6.05],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5.1, 1.1, 4.8]},
+			"faces": {
+				"north": {"uv": [0.25, 0.5, 0.75, 0.75], "texture": "#0"},
+				"east": {"uv": [0.25, 0.5, 0.25, 0.75], "texture": "#0"},
+				"south": {"uv": [0.75, 0.5, 1.25, 0.75], "texture": "#0"},
+				"west": {"uv": [0.75, 0.5, 0.75, 0.75], "texture": "#0"},
+				"up": {"uv": [0.75, 0.5, 0.25, 0.5], "texture": "#0"},
+				"down": {"uv": [1.25, 0.5, 0.75, 0.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 225, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 2, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"scale": [0.625, 0.625, 0.625]
+		},
+		"fixed": {
+			"scale": [0.5, 0.5, 0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "RightBoot",
+			"origin": [1.9, 12, 0],
+			"color": 0,
+			"children": [0, 1]
+		},
+		{
+			"name": "LeftBoot",
+			"origin": [-1.9, 12, 0],
+			"color": 0,
+			"children": [2, 3]
+		}
+	]
+}

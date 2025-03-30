@@ -1,0 +1,16 @@
+[
+	{
+		"modid": "draconicshenanigans",
+		"name": "Draconic Shenanigans",
+		"description": "Adds various Draconic Evolution items to aid with your Draconic Evolution addiction",
+		"version": "${version}",
+		"mcversion": "${mc_version}",
+		"url": "",
+		"updateUrl": "",
+		"authorList": ["minecraftbossdj"],
+		"credits": "brandon3055 - Draconic Evolution, FoxMcloud5655 - Draconic Additions (template for this mod)",
+		"logoFile": "banner.png",
+		"screenshots": [],
+		"dependencies": []
+	}
+]

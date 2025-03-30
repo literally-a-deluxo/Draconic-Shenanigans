@@ -1,0 +1,46 @@
+modLoader="javafml"
+loaderVersion="[${lang_version},)"
+license="CoFH \"Don't Be a Jerk\" License"
+
+[[mods]]
+	modId="draconicshenanigans"
+	displayName="Draconic Shenanigans"
+	version="${file.jarVersion}"
+	authors="minecraftbossdj"
+	description=''''''
+[[dependencies.draconicshenanigans]]
+	modId="forge"
+	mandatory=true
+	versionRange="[${forge_version},)"
+	ordering="NONE"
+	side="BOTH"
+[[dependencies.draconicshenanigans]]
+	modId="minecraft"
+	mandatory=true
+	versionRange="[1.20.1,)"
+	ordering="NONE"
+	side="BOTH"
+[[dependencies.draconicshenanigans]]
+	modId="curios"
+	mandatory=true
+	versionRange="[${curios_version},)"
+	ordering="AFTER"
+	side="BOTH"
+[[dependencies.draconicshenanigans]]
+	modId="codechickenlib"
+	mandatory=true
+	versionRange="${ccl_version}"
+	ordering="AFTER"
+	side="BOTH"
+[[dependencies.draconicshenanigans]]
+	modId="brandonscore"
+	mandatory=true
+	versionRange="[${bcore_version},)"
+	ordering="AFTER"
+	side="BOTH"
+[[dependencies.draconicshenanigans]]
+	modId="draconicevolution"
+	mandatory=true
+	versionRange="[${de_version},)"
+	ordering="AFTER"
+	side="BOTH"

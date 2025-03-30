@@ -1,0 +1,146 @@
+plugins {
+	id 'java'
+	id 'maven-publish'
+	id 'eclipse'
+	id 'net.neoforged.gradle' version '[6.0.18,6.2)'
+	id 'org.spongepowered.mixin' version '0.7.+'
+}
+
+group = "net.foxmcloud.draconicshenanigans"
+archivesBaseName = "Draconic-Shenanigans"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+//Add generated resources to main resources.
+sourceSets.main.resources.srcDirs += "src/main/generated"
+
+file('build.properties').withReader {
+	def prop = new Properties()
+	prop.load(it)
+	project.ext.config = new ConfigSlurper().parse prop
+}
+
+def signProps = [:]
+
+config.mod_version = "${config.mod_version}.${config.buildNo}"
+version = "${config.mc_version}-${config.mod_version}"
+println "Starting build of ${archivesBaseName}, Version: ${config.mod_version}"
+println "Using NeoForge: ${config.neo_version}, for Minecraft: ${config.mc_version}, with official mappings"
+
+minecraft {
+	mappings channel: 'official', version: config.mc_version
+	accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
+	runs {
+		client {
+			workingDirectory file('run')
+			mods { draconicshenanigans { source sourceSets.main } }
+			property 'mixin.env.remapRefMap', 'true'
+			property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+		}
+		server {
+			workingDirectory file('run')
+			mods { draconicshenanigans { source sourceSets.main } }
+			property 'mixin.env.remapRefMap', 'true'
+			property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+		}
+		data {
+			workingDirectory file('run')
+			args '--mod', 'draconicshenanigans', '--all', '--output', file("src/main/generated"), '--existing', file("src/main/resources"), '--existing', file("../Draconic-Evolution/src/main/resources")
+			mods { draconicshenanigans { source sourceSets.main } }
+			property 'mixin.env.remapRefMap', 'true'
+			property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+		}
+	}
+}
+
+repositories {
+	mavenLocal()
+	maven { url = "https://maven.covers1624.net/" }
+	maven { url = "https://maven.blamejared.com/" }
+	maven { url = "https://maven.theillusivec4.top/" }
+}
+
+dependencies {
+	minecraft "net.neoforged:forge:${config.mc_version}-${config.neo_version}"
+	implementation fg.deobf("com.brandon3055.brandonscore:BrandonsCore:${config.mc_version}-${config.bcore_version}:universal")
+	implementation fg.deobf("io.codechicken:CodeChickenLib:${config.mc_version}-${config.ccl_version}:universal")
+
+	runtimeOnly(fg.deobf("mezz.jei:jei-${config.mc_version}-forge:${config.jei_version}"))
+	runtimeOnly(fg.deobf("io.codechicken:EnderStorage:${config.mc_version}-${config.ender_storage_version}:universal"))
+
+	runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${config.curios_version}")
+	compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${config.curios_version}:api")
+
+	implementation fg.deobf("com.brandon3055.draconicevolution:Draconic-Evolution:${config.mc_version}-${config.de_version}:universal")
+}
+
+processResources {
+	inputs.property 'mc_version', config.mc_version
+	inputs.property 'mod_version', config.mod_version
+	inputs.property 'bcore_version', config.bcore_version
+	inputs.property 'de_version', config.de_version
+
+	filesMatching('META-INF/mods.toml') {
+		expand 'file': ['jarVersion': config.mod_version],
+			'mc_version': config.mc_version,
+			'forge_version': config.neo_version,
+			'lang_version': config.neo_version.split('\\.')[0],
+			'ccl_version': "[${config.ccl_version.replace('.+', '')},${config.ccl_version_max})",
+			'bcore_version': config.bcore_version,
+			'cct_version': config.cct_version,
+			'curios_version': config.mc_version + "-" + config.curios_version,
+			'de_version': config.de_version
+	}
+}
+
+jar {
+	finalizedBy 'reobfJar'
+	archiveClassifier = 'universal'
+	from file("LICENSE")
+	manifest {
+		attributes 'Specification-Title': archivesBaseName
+		attributes 'Specification-Vendor': 'FoxMcloud5655'
+		attributes 'Specification-Version': "1"
+		attributes 'Implementation-Title': archivesBaseName
+		attributes 'Implementation-Vendor': 'FoxMcloud5655'
+		attributes 'Implementation-Version': version
+		attributes 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+	}
+}
+
+task srcJar(type: Jar) {
+	build.dependsOn it
+	from sourceSets.main.allSource
+	archiveClassifier = 'sources'
+	from file("LICENSE")
+}
+
+/**
+ * Polls the 'compile' configuration for a dependency with the given module name
+ * and resolves, and returns its version. E.g: '1.2.+' will resolve to '1.2.3.4'
+ *
+ * @param module The module to search for.
+ * @param chop If the string should be chopped on the last '-' in its string.
+ * @param configuration The name of the configuration to search.
+ * @param errorMissing If an error should be thrown if it can't be found.
+ * @return The version string, '0' if 'errorMissing' is false and nothing was found.
+ */
+def resolve(module, chop = true, configuration = 'compile', errorMissing = true) {
+	//Copy and lenient resolve the configuration, Forge cant be resolved at this time so lenient is required.
+	def filtered = configurations.getByName(configuration).copy().incoming.artifactView({ it.lenient = true }).artifacts
+			.findAll { it.id.componentIdentifier.module == module }
+			.collect { it.id.componentIdentifier.version }
+	if (filtered.size() > 1) {
+		println "WARNING: Found ${filtered.size()} Dependencies with ModuleName '${module}' in configuration '${configuration.name}'"
+	}
+	if (errorMissing && filtered.isEmpty()) {
+		throw new RuntimeException("Failed resolve dependency version for '${module}'")
+	}
+	if (filtered.isEmpty()) return "0"
+	def version = filtered.first() as String
+	if (chop) {
+		def idx = version.lastIndexOf('-')
+		return version.substring(idx + 1)
+	}
+	return version
+}
