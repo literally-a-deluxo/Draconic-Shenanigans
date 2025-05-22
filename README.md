@@ -1,4 +1,4 @@
-a draconic addon all about shenanigans
+A draconic addon all about shenanigans!
 
 at the current moment it adds wyvern and draconic armor
 i dont think i will chaos version for balance since this already very broken
